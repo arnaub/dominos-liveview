@@ -1,0 +1,11 @@
+<h1>Waiting Room: Game - <%= @game.name %></h1>
+
+<ul>
+<%= for user <- @users do %>
+  <li class="current_<%= user.id == @current_user_id %>"><%= user.email %> <%= user.enter_at %></li>
+<% end %>
+</ul>
+
+<%= if @current_user_id == @game.user_id do %>
+  <button phx-click="start_game" phx-value-game_id="<%= @game.id %>" >play</button>
+<% end %>

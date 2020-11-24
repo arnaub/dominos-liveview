@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+}
+.container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4em 1em;
+  box-sizing: border-box;
+}
+
+.current_true {
+  color: green;
+}
+
+.header {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  background: black;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu-item {
+  display: inline-block;
+  text-decoration: underline;
+  padding: 0.75em 1em;
+  a {
+    color: white;
+  }
+}
+
+.logo {
+  width: 200px;
+  float: left;
+  margin: 0;
+  color: white;
+  box-sizing: border-box;
+  padding-left: 1em;
+}

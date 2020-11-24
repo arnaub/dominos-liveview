@@ -1,0 +1,9 @@
+<header class="header">
+  <h1 class="logo">Dominos!</h1>
+  <nav>
+    <ul class="menu">
+      <li class="menu-item" ><%= link "Games", to: Routes.game_path(@conn, :index) %></li>
+      <li class="menu-item" ><%= link "Logout", to: Routes.pow_session_path(@conn, :delete), method: :delete %></li>
+    </ul>
+  </nav>
+</header>
