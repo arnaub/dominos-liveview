@@ -75,6 +75,7 @@ defmodule DominosWeb.GameControllerTest do
     test "deletes chosen game", %{conn: conn, game: game} do
       conn = delete(conn, Routes.game_path(conn, :delete, game))
       assert redirected_to(conn) == Routes.game_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.game_path(conn, :show, game))
       end
