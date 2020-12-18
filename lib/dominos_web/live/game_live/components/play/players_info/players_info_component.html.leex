@@ -1,0 +1,11 @@
+<div class="players-info">
+    <h3>Players</h3>
+    <ul class="players-list">
+    <%= for player <- @players do %>
+      <li class="current_<%= player.id == @state.player_turn %>">
+        <p><%= player.name %> <%= player.tiles_count %></p>
+        <p class="score"><%= player_score(player.score) %></p>
+      </li>
+    <% end %>
+    </ul>
+  </div>

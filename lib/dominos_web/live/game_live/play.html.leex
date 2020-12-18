@@ -1,111 +1,13 @@
-<% player = DominosWeb.GameView.player_state(@state, @current_user_id) %>
-
 <%= if @state.status == "ended" do %>
-  <div class="scores-popover">
-    <h1>Game Resume</h1>
-    <div class="podium-wrapper">
-      <%=for  {player, index} <- DominosWeb.GameView.players_by_score(@state) do %>
-        <div class="podium podium-<%= index %>">
-          <p class="name"><%= player.name %></p>
-          <p class="score"><%= player.score |> Enum.sum() %></p>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <%= live_component @socket, DominosWeb.GameLive.Play.ResumeComponent, state: @state %>
 <% end %>
 
 
 <%= if @state.status == "waiting" do %>
-  <div class="scores-popover">
-    <h2>Round finished</h2>
-    <table>
-      <tr>
-        <%= for player <- @players_info |> Enum.sort_by(&(&1.id)) do %>
-          <th><%= player.name %></th>
-        <% end %>
-      </tr>
-      <tr>
-        <%= for player <- @players_info |> Enum.sort_by(&(&1.id)) do %>
-          <td>
-            <%= for score <- player.score do %>
-              <p><%= score %></p>
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-      <tr>
-        <%= for player <- @players_info |> Enum.sort_by(&(&1.id)) do %>
-          <th>
-            Total: <%= DominosWeb.GameView.player_score(player.score) %>
-          </th>
-        <% end %>
-      </tr>
-    </table>
-    <button phx-click="next_round" phx-value-game_id="<%= @game_id %>">Continue</button>
-  </div>
+  <%= live_component @socket, DominosWeb.GameLive.Play.ScoresComponent, players: @players_info |> Enum.sort_by(&(&1).id), game_id: @game_id %>
 <% end %>
 
 <%= if @state.status == "playing" do %>
-  <div class="players-info">
-    <h3>Players</h3>
-    <ul class="players-list">
-    <%= for player <- @players_info |> Enum.sort_by(&(&1).id) do %>
-      <li class="current_<%= player.id == @state.player_turn %>">
-        <p><%= player.name %> <%= player.tiles_count %></p>
-        <p class="score"><%= DominosWeb.GameView.player_score(player.score) %></p>
-      </li>
-    <% end %>
-    </ul>
-  </div>
-
-  <div class="game-container">
-    <div class="board">
-      <ul class="board-tiles">
-      <%= for [up, down] <- @state.board_tiles do %>
-        <li class="double-<%= up == down %>">
-          <div class="tile tile__rotate-<%= up != down  %>">
-            <div class="tile__up tile__number<%= up %>"></div>
-            <div class="tile__down tile__number<%= down %>"></div>
-          </div>
-        </li>
-      <% end %>
-      </ul>
-    </div>
-
-    <%= if player != nil do %>
-      <div class="board-game">
-        <ul class="picked-tiles">
-          <%= for tile <- player.picked_tiles do %>
-            <%= if player.available_moves |> Enum.member?(tile) do %>
-              <li class="available-move">
-                <div class="tile tile-centered">
-                  <div class="tile__up tile__number<%= tile |> Enum.at(0) %>"></div>
-                  <div class="tile__down tile__number<%= tile |> Enum.at(1) %>"></div>
-                </div>
-                <button class="play-button play-left" phx-click="play_tile" phx-value-player_id=<%= @current_user_id %> phx-value-side="left" phx-value-tile=<%= tile |> Enum.join(",")%> phx-value-game_id="<%= @game_id %>">Left</button>
-                <button class="play-button play-right" phx-click="play_tile" phx-value-player_id=<%= @current_user_id %> phx-value-side="right" phx-value-tile=<%= tile |> Enum.join(",")%> phx-value-game_id="<%= @game_id %>">Right</button>
-              </li>
-            <% else %>
-              <li>
-                <div class="tile">
-                  <div class="tile__up tile__number<%= tile |> Enum.at(0) %>"></div>
-                  <div class="tile__down tile__number<%= tile |> Enum.at(1) %>"></div>
-                </div>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-      </div>
-
-      <%= if player.id == @state.player_turn do %>
-        <%= if player.available_moves |> Enum.count() == 0 do %>
-          <button class="pick-button" phx-click="pick_tile" phx-value-current_user_id=<%= @current_user_id %> phx-value-game_id="<%= @game_id %>">Pick tile</button>
-        <% else %>
-          <button class="pick-button" disabled>Play a tile</button>
-        <% end %>
-      <% else %>
-        <button class="pick-button" disabled>Waiting</button>
-      <% end %>
-    <% end %>
-  </div>
+  <%= live_component @socket, DominosWeb.GameLive.Play.PlayersInfoComponent, players: @players_info |> Enum.sort_by(&(&1).id), state: @state %>
+  <%= live_component @socket, DominosWeb.GameLive.Play.BoardComponent, state: @state, current_user_id: @current_user_id, game_id: @game_id %>
 <% end %>
