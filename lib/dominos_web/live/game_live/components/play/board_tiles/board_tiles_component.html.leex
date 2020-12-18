@@ -1,0 +1,10 @@
+<ul class="board-tiles">
+  <%= for [up, down] <- @board_tiles do %>
+    <li class="double-<%= up == down %>">
+      <div class="tile tile__rotate-<%= up != down  %>">
+        <div class="tile__up tile__number<%= up %>"></div>
+        <div class="tile__down tile__number<%= down %>"></div>
+      </div>
+    </li>
+  <% end %>
+</ul>

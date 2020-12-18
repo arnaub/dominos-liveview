@@ -1,0 +1,27 @@
+<div class="scores-popover">
+  <h2>Round finished</h2>
+  <table>
+    <tr>
+      <%= for player <- @players do %>
+        <th><%= player.name %></th>
+      <% end %>
+    </tr>
+    <tr>
+      <%= for player <- @players do %>
+        <td>
+          <%= for score <- player.score do %>
+            <p><%= score %></p>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+    <tr>
+      <%= for player <- @players do %>
+        <th>
+          Total: <%= player_score(player.score) %>
+        </th>
+      <% end %>
+    </tr>
+  </table>
+  <button phx-click="next_round" phx-value-game_id="<%= @game_id %>">Continue</button>
+</div>

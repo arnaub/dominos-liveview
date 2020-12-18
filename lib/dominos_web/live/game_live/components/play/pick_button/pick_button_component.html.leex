@@ -1,0 +1,9 @@
+<%= if @player.id == @state.player_turn do %>
+  <%= if @player.available_moves |> Enum.count() == 0 do %>
+    <button class="pick-button" phx-click="pick_tile" phx-value-current_user_id=<%= @current_user_id %> phx-value-game_id="<%= @game_id %>">Pick tile</button>
+  <% else %>
+    <button class="pick-button disabled" disabled>Play a tile</button>
+  <% end %>
+<% else %>
+  <button class="pick-button disabled" disabled>Waiting</button>
+<% end %>

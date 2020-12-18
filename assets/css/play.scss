@@ -116,7 +116,7 @@
   border: none;
   padding: 0;
   text-align: center;
-  width: 80px;
+  width: 30px;
 }
 
 .play-left {
@@ -179,14 +179,24 @@
 }
 
 .pick-button {
-  width: 20em;
-  height: 20em;
-  border-radius: 20em;
+  width: 14em;
+  height: 14em;
+  border-radius: 14em;
   position: fixed;
   left: 1em;
-  top: 8em;
+  bottom: 15em;
+  border: none;
   background: rgba(100, 255, 0, 0.5);
   &:hover {
-    background: rgba(100, 255, 0, 1);
+    background: rgb(220, 221, 220);
+  }
+}
+
+.pick-button[disabled] {
+  background: rgba(200, 200, 200, 0.7);
+  opacity: 1;
+  color: grey;
+  &:hover {
+    background: rgba(200, 200, 200, 0.9);
   }
 }

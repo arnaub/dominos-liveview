@@ -1,0 +1,11 @@
+<% player = player_state(@state, @current_user_id) %>
+<div class="game-container">
+  <div class="board">
+    <%= live_component @socket, DominosWeb.GameLive.Play.BoardTilesComponent, board_tiles: @state.board_tiles %>
+  </div>
+
+  <%= if player != nil do %>
+    <%= live_component @socket, PlayerDashboardComponent, player: player, current_user_id: @current_user_id, game_id: @game_id %>
+    <%= live_component @socket, PickButtonComponent, player: player, state: @state, current_user_id: @current_user_id, game_id: @game_id %>
+  <% end %>
+</div>

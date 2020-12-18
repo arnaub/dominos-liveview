@@ -1,0 +1,11 @@
+<div class="scores-popover">
+  <h1>Game Resume</h1>
+  <div class="podium-wrapper">
+    <%=for  {player, index} <- players_by_score(@state) do %>
+      <div class="podium podium-<%= index %>">
+        <p class="name"><%= player.name %></p>
+        <p class="score"><%= player.score |> Enum.sum() %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
