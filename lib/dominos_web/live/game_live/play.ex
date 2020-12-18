@@ -77,7 +77,7 @@ defmodule DominosWeb.GameLive.Play do
             {Dominos.Play, name: process_name}
           )
 
-        Play.setup(pid, game_id, [1, 2], game.state)
+        Play.setup(pid, game_id, game.player_ids, game.state)
         pid
 
       pid ->

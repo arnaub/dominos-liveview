@@ -116,8 +116,11 @@ defmodule Dominos.Games do
   end
 
   def subscribe(id) do
-    IO.inspect("subscribing")
     Phoenix.PubSub.subscribe(Dominos.PubSub, "game-#{id}")
+  end
+
+  def broadcast(id, event, payload) do
+    Phoenix.PubSub.broadcast(Dominos.PubSub, id, {event, payload})
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

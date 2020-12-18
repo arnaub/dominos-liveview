@@ -1,11 +1,31 @@
-<h1>Waiting Room: Game - <%= @game.name %></h1>
+<div class="wrapper">
+  <h1>Waiting Room: Game - <%= @game_name %></h1>
+  <div class="show-game">
+    <div class="players-list">
+      <h2 class="room-title">Players</h2>
+      <%= for player <- players_ready(@game_player_ids, @users) do %>
+        <p class="current_<%= player.id == @current_user_id %>">
+          <%= player.username %>
+          <button class="room-button" phx-click="remove_player" phx-value-player_id="<%= player.id %>">Remove</button>
+        </p>
+      <% end %>
+    </div>
 
-<ul>
-<%= for user <- @users do %>
-  <li class="current_<%= user.id == @current_user_id %>"><%= user.email %> <%= user.enter_at %></li>
-<% end %>
-</ul>
 
-<%= if @current_user_id == @game.user_id do %>
-  <button phx-click="start_game" phx-value-game_id="<%= @game.id %>" >play</button>
-<% end %>
+    <div class="players-list">
+      <h2 class="room-title">Waiting</h2>
+      <%= for user <- players_waiting(@game_player_ids, @users) do %>
+        <p class="current_<%= user.id == @current_user_id %>">
+          <%= user.username %>
+          <%= if game_owner?(@owner_id, @current_user_id) do %>
+            <button class="room-button" phx-click="add_player" phx-value-player_id="<%= user.id %>">Add</button>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <%= if game_ready?(@owner_id, @current_user_id, @game_player_ids) do %>
+    <button phx-click="start_game">play</button>
+  <% end %>
+</div>
