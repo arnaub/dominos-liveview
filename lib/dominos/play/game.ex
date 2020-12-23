@@ -25,11 +25,7 @@ defmodule Dominos.Play.Game do
   def play_tile(state, tile, side, play_type) do
     case Moves.play_tile(state, tile, side) do
       {:ok, new_state} ->
-        IO.inspect(new_state)
-
         if winner_round?(new_state) do
-          IO.inspect("!!!Winner!!!!")
-
           new_state
           |> update_state(%{
             players: Scores.calculate_scores(new_state, play_type),
@@ -40,8 +36,6 @@ defmodule Dominos.Play.Game do
           |> save_state()
         else
           if is_closed?(new_state) do
-            IO.inspect("!!!Closed!!!!")
-
             new_state
             |> update_state(%{
               players: Scores.calculate_scores(new_state, :closed),

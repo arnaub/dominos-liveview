@@ -23,7 +23,6 @@ defmodule DominosWeb.GameLive.Play do
     pid = get_pid(game_id)
     Play.play_tile(pid, format_tile(tile), String.to_atom(side))
     state = Play.get_state(pid)
-    IO.inspect(state)
     Phoenix.PubSub.broadcast(Dominos.PubSub, "play:#{game_id}", {:update, game_id})
     {:noreply, assign(socket, state: state)}
   end
