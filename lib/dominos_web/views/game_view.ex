@@ -3,7 +3,19 @@ defmodule DominosWeb.GameView do
 
   def game_owner?(owner_id, owner_id), do: true
 
-  def game_owner?(owner_id, current_user_id), do: false
+  def game_owner?(_owner_id, _current_user_id), do: false
+
+  def available_side(_side, [], _tile), do: true
+
+  def available_side(:left, board_tiles, [x_value, y_value]) do
+    [value, _] = board_tiles |> Enum.at(0)
+    x_value == value || y_value == value
+  end
+
+  def available_side(:right, board_tiles, [x_value, y_value]) do
+    [_, value] = board_tiles |> Enum.at(-1)
+    x_value == value || y_value == value
+  end
 
   def game_ready?(game_id, player_id, game_player_ids) do
     game_owner?(game_id, player_id) && enough_players?(game_player_ids)

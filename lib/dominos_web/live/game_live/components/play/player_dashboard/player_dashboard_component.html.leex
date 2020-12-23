@@ -7,8 +7,12 @@
             <div class="tile__up tile__number<%= tile |> Enum.at(0) %>"></div>
             <div class="tile__down tile__number<%= tile |> Enum.at(1) %>"></div>
           </div>
-          <button class="play-button play-left" phx-click="play_tile" phx-value-player_id=<%= @current_user_id %> phx-value-side="left" phx-value-tile=<%= tile |> Enum.join(",")%> phx-value-game_id="<%= @game_id %>">L</button>
-          <button class="play-button play-right" phx-click="play_tile" phx-value-player_id=<%= @current_user_id %> phx-value-side="right" phx-value-tile=<%= tile |> Enum.join(",")%> phx-value-game_id="<%= @game_id %>">R</button>
+          <%= if available_side(:left, @board_tiles, tile) do %>
+            <button class="play-button play-left" phx-click="play_tile" phx-value-player_id="<%= @current_user_id %>" phx-value-side="left" phx-value-tile="<%= tile |> Enum.join(",")%>" phx-value-game_id="<%= @game_id %>">L</button>
+          <% end %>
+          <%= if available_side(:right, @board_tiles, tile) do %>
+            <button class="play-button play-right" phx-click="play_tile" phx-value-player_id="<%= @current_user_id %>" phx-value-side="right" phx-value-tile="<%= tile |> Enum.join(",")%>" phx-value-game_id="<%= @game_id %>">R</button>
+          <% end %>
         </li>
       <% else %>
         <li>

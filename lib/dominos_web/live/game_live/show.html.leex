@@ -6,7 +6,9 @@
       <%= for player <- players_ready(@game_player_ids, @users) do %>
         <p class="current_<%= player.id == @current_user_id %>">
           <%= player.username %>
-          <button class="room-button" phx-click="remove_player" phx-value-player_id="<%= player.id %>">Remove</button>
+          <%= if game_owner?(@owner_id, @current_user_id) do %>
+            <button class="room-button" phx-click="remove_player" phx-value-player_id="<%= player.id %>">Remove</button>
+          <% end %>
         </p>
       <% end %>
     </div>
