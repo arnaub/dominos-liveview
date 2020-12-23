@@ -13,14 +13,26 @@ defmodule DominosWeb.GameLive.Show do
   @impl true
   def mount(_params, %{"id" => id, "user_id" => user_id}, socket) do
     game = Games.get_game!(id)
+
     case game.status do
-      "playing" -> {:ok, redirect(socket, to: Routes.game_play_path(socket, :play, game))}
+      "playing" ->
+        {:ok, redirect(socket, to: Routes.game_play_path(socket, :play, game))}
+
       _ ->
         if connected?(socket), do: DominosWeb.Endpoint.subscribe(topic(id))
         user = Users.get_user!(user_id)
         track_user(id, user)
         users = get_game_users(id)
-        {:ok, assign(socket, game_name: game.name, game_id: game.id, owner_id: game.user_id, current_user_id: user_id, users: users, game_player_ids: game.player_ids)}
+
+        {:ok,
+         assign(socket,
+           game_name: game.name,
+           game_id: game.id,
+           owner_id: game.user_id,
+           current_user_id: user_id,
+           users: users,
+           game_player_ids: game.player_ids
+         )}
     end
   end
 
@@ -56,10 +68,12 @@ defmodule DominosWeb.GameLive.Show do
   @impl true
   def handle_event("start_game", _params, socket) do
     game = game_from_socket(socket)
+
     case Games.update_game(game, %{status: "playing"}) do
       {:ok, game_updated} ->
         Games.broadcast(topic(game_updated.id), :start_game, game_updated)
     end
+
     {:noreply, socket}
   end
 
@@ -69,7 +83,10 @@ defmodule DominosWeb.GameLive.Show do
 
   defp remove_player_from_game(player_id, socket) do
     game = game_from_socket(socket)
-    player_ids = game.player_ids |> Enum.filter(fn id -> id != player_id |> String.to_integer() end)
+
+    player_ids =
+      game.player_ids |> Enum.filter(fn id -> id != player_id |> String.to_integer() end)
+
     {:ok, updated_game} = Games.update_game(game, %{player_ids: player_ids})
     Games.broadcast(topic(game.id), :update_player_ids, updated_game.player_ids)
   end
