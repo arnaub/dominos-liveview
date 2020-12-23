@@ -50,7 +50,8 @@ defmodule Dominos.MixProject do
       {:pow, "~> 1.0.20"},
       {:timex, "~> 3.5"},
       {:ex_machina, "~> 2.4"},
-      {:faker, "~> 0.15", only: :test}
+      {:faker, "~> 0.15", only: :test},
+      {:distillery, "~> 2.1", runtime: false}
     ]
   end
 
